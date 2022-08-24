@@ -1,0 +1,6 @@
+<p>Vous devrez choisir la région du GAB</p><br />
+<table border="black">
+    <tr *ngFor="let region of regions">
+        <td><a routerLink="/agences/{{region.libReg}}">{{region.libReg}}</a></td>
+    </tr>
+ </table>

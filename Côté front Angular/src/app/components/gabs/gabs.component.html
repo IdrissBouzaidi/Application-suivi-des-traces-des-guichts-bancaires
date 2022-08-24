@@ -1,0 +1,6 @@
+<p>Vous devrez choisir le GAB</p><br />
+<table border="black">
+    <tr *ngFor="let GAB of gabs">
+        <td><a routerLink="/Traces/{{GAB.codeGAB}}">{{GAB.urlGAB}}</a></td>
+    </tr>
+</table>
