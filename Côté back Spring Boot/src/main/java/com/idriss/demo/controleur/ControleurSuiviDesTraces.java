@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idriss.demo.classes.AjoutTrace;
 import com.idriss.demo.classes.Chemin;
+import com.idriss.demo.classes.User;
 import com.idriss.demo.entities.Agence;
 import com.idriss.demo.entities.GAB;
 import com.idriss.demo.entities.Region;
@@ -78,6 +79,13 @@ public class ControleurSuiviDesTraces {
 	public ResponseEntity<Trace> ajouterTrace(@RequestBody AjoutTrace ajout) throws CopieException{
 		Trace trace = traceService.ajouterTrace(ajout);
 		return new ResponseEntity<Trace>(trace, HttpStatus.OK);
+	}
+	
+
+	@GetMapping(produces = "application/json")
+	@RequestMapping({ "/validateLogin" })
+	public User validateLogin() {
+		return new User("User successfully authenticated");
 	}
 
 }

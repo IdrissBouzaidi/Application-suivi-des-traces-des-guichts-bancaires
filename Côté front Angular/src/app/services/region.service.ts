@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,7 +14,12 @@ export class RegionService {
   constructor(private _httpClient: HttpClient) { }
 
   getRegions(): Observable<Region[]>{
-    return this._httpClient.get<Region[]>(this.getUrl).pipe(
+
+    let username='javainuse'
+    let password='password'
+    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+
+    return this._httpClient.get<Region[]>(this.getUrl, {headers}).pipe(
       map(response => response)
     )
   }

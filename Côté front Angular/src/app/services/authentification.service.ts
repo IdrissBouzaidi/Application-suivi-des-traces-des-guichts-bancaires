@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthentificationService {
 
-  constructor() { }
+  constructor(private _httpClient: HttpClient) { }
 
   authenticate(username: string, password: string) {
     if (username === "javainuse" && password === "password") {
