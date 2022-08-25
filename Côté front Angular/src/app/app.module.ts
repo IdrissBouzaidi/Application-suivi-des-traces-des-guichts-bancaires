@@ -11,6 +11,8 @@ import { TracesComponent } from './components/traces/traces.component';
 import { CheminComponent } from './components/chemin/chemin.component';
 import { AjouttracesComponent } from './components/ajouttraces/ajouttraces.component';
 import { FormsModule } from '@angular/forms';
+import { AuthentificationComponent } from './components/authentification/authentification.component';
+import { DeconnexionComponent } from './components/deconnexion/deconnexion.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     GABsComponent,
     TracesComponent,
     CheminComponent,
-    AjouttracesComponent
+    AjouttracesComponent,
+    AuthentificationComponent,
+    DeconnexionComponent
   ],
   imports: [
     BrowserModule,

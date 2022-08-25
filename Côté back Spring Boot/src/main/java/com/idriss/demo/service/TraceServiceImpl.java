@@ -1,5 +1,6 @@
 package com.idriss.demo.service;
 
+import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,7 @@ import com.idriss.demo.repository.AgenceRepository;
 import com.idriss.demo.repository.GABRepository;
 import com.idriss.demo.repository.RegionRepository;
 import com.idriss.demo.repository.TraceRepository;
+import com.idriss.demo.service.TraceServiceImpl.CopieException;
 
 @Service
 public class TraceServiceImpl implements TraceService {
@@ -31,21 +33,15 @@ public class TraceServiceImpl implements TraceService {
 	
 	
 
-	public static void executerCommande(String command) {
+	public static int executerCommande(String command) throws IOException, InterruptedException {
 		String[] commande = {"cmd.exe","/c", command};
 		System.out.println("Exécution de la commande:\n");
-		
-		try {
-			ProcessBuilder pb = new ProcessBuilder(commande);
-			pb.redirectError(Redirect.INHERIT);
-			pb.redirectOutput(Redirect.INHERIT);
-			Process p = pb.start();
-			System.out.println("En attente2:\n");
-			p.waitFor();
-		}
-		catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		ProcessBuilder pb = new ProcessBuilder(commande);
+		pb.redirectError(Redirect.INHERIT);
+		pb.redirectOutput(Redirect.INHERIT);
+		Process p = pb.start();
+		System.out.println("En attente2:\n");
+		return p.waitFor();
 	}
 	public static String cheminGabCentral(String cheminGAB) {
 		String cheminCentral = "";
@@ -86,7 +82,7 @@ public class TraceServiceImpl implements TraceService {
 	}
 
 	@Override
-	public Trace ajouterTrace(AjoutTrace ajout) {
+	public Trace ajouterTrace(AjoutTrace ajout) throws CopieException {
 		String date = ajout.getDateTrace();
 		StringBuffer dateB = new StringBuffer(date);
 		for(int i = 0; i<dateB.length(); i++) {
@@ -100,15 +96,30 @@ public class TraceServiceImpl implements TraceService {
 		String cheminTrace = cheminGAB + "\\EJ_" + date + ".txt";
 		String commande = "xcopy " + cheminTrace + " \"C:\\Application-suivi-des-traces-des-guichts-bancaires\\Côté front Angular\\src\\assets\\" + cheminGabCentral(cheminGAB) + "\"";
 		System.out.println(commande);
-		executerCommande(commande);
-		
+		try {
+			int statutCommande = executerCommande(commande);
+			if(statutCommande == 0) {
+				Date dateD = new Date();
+				LocalDate localDate = LocalDate.of(dateD.getYear() + 1900, dateD.getMonth() + 1, dateD.getDate());
+				String dateRemontee = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString();
+				Trace trace = new Trace("EJ_" + date, gabRepository.findById(codeGAB).get(), ajout.getDateTrace(), dateRemontee);
+				traceRepository.save(trace);
+				return trace;
+			}
+			else {
+				throw new CopieException("Le fichier que vous êtes en train de rechercher n'existe pas");
+			}
 
-		Date dateD = new Date();
-		LocalDate localDate = LocalDate.of(dateD.getYear() + 1900, dateD.getMonth() + 1, dateD.getDate());
-		String dateRemontee = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString();
-		Trace trace = new Trace("EJ_" + date, gabRepository.findById(codeGAB).get(), ajout.getDateTrace(), dateRemontee);
-		traceRepository.save(trace);
-		return trace;
+		}
+		catch(Exception e) {
+			throw new CopieException("C'est une exception");
+		}
+	}
+	
+	public class CopieException extends Exception {
+	    public CopieException(String message) {
+	        super (message);
+	    }
 	}
 
 	

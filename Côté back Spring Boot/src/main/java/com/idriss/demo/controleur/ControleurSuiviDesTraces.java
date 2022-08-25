@@ -23,6 +23,7 @@ import com.idriss.demo.service.AgenceService;
 import com.idriss.demo.service.GABService;
 import com.idriss.demo.service.RegionService;
 import com.idriss.demo.service.TraceService;
+import com.idriss.demo.service.TraceServiceImpl.CopieException;
 
 @CrossOrigin("*")
 @RestController
@@ -74,7 +75,7 @@ public class ControleurSuiviDesTraces {
 	}
 	
 	@PostMapping("/ajouterTrace")
-	public ResponseEntity<Trace> ajouterTrace(@RequestBody AjoutTrace ajout){
+	public ResponseEntity<Trace> ajouterTrace(@RequestBody AjoutTrace ajout) throws CopieException{
 		Trace trace = traceService.ajouterTrace(ajout);
 		return new ResponseEntity<Trace>(trace, HttpStatus.OK);
 	}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Ajouttrace } from '../models/ajouttrace';
 
 @Injectable({
@@ -14,6 +14,11 @@ export class AjouttraceService {
 
   ajouterTrace(ajout: Ajouttrace): Observable<Ajouttrace>{
     console.log(ajout);
-    return this._httpClient.post<Ajouttrace>(this.getUrl, ajout);
+    return this._httpClient.post<Ajouttrace>(this.getUrl, ajout)
+                        .pipe(catchError(this.gererErreur))
+  }
+  gererErreur(error: { message: any; }){
+    return throwError(error.message || "Server Error");
+    
   }
 }

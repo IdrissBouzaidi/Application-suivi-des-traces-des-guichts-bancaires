@@ -8,8 +8,9 @@ import com.idriss.demo.entities.Agence;
 import com.idriss.demo.entities.GAB;
 import com.idriss.demo.entities.Region;
 import com.idriss.demo.entities.Trace;
+import com.idriss.demo.service.TraceServiceImpl.CopieException;
 
 public interface TraceService {
 	Chemin genererCheminTrace(int idTrace);
-	Trace ajouterTrace(AjoutTrace ajout);
+	Trace ajouterTrace(AjoutTrace ajout) throws CopieException;
 }
