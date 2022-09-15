@@ -4,28 +4,16 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegionsComponent } from './components/regions/regions.component';
-import { AgencesComponent } from './components/agences/agences.component';
-import { GABsComponent } from './components/gabs/gabs.component';
-import { TracesComponent } from './components/traces/traces.component';
-import { CheminComponent } from './components/chemin/chemin.component';
-import { AjouttracesComponent } from './components/ajouttraces/ajouttraces.component';
 import { FormsModule } from '@angular/forms';
 import { AuthentificationComponent } from './components/authentification/authentification.component';
-import { DeconnexionComponent } from './components/deconnexion/deconnexion.component';
+import { ObjetsorigineComponent } from './components/objetsorigine/objetsorigine.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegionsComponent,
-    AgencesComponent,
-    GABsComponent,
-    TracesComponent,
-    CheminComponent,
-    AjouttracesComponent,
     AuthentificationComponent,
-    DeconnexionComponent
+    ObjetsorigineComponent
   ],
   imports: [
     BrowserModule,

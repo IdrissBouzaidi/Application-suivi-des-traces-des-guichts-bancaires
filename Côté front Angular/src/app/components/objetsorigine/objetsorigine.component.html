@@ -1,0 +1,229 @@
+<nav *ngIf="affichagePage == true" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href=""><img src="../../../assets/galerie/accueil.png" height="30px"/></a>
+    <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active" id="nav-item_regions" [ngClass]="{'active': typeElements[0] == 'regions'}">
+                <a class="nav-link" href="regions" *ngIf="profilActuel == '1'">Régions</a>
+            </li>
+            <li class="nav-item" id="nav-item_agences" [ngClass]="{'active': typeElements[0] == 'agences'}">
+                <a class="nav-link" href="agences" *ngIf="profilActuel == '1'">Agences</a>
+            </li>
+            <li class="nav-item" id="nav-item_GABs" [ngClass]="{'active': typeElements[0] == 'GABs'}">
+                <a class="nav-link" href="GABs" *ngIf="profilActuel == '1'">GABs</a>
+                <a class="nav-link" style="cursor: pointer;" *ngIf="profilActuel == '2'" href="/GABs">Ajouter un GAB</a>
+            </li>
+            <li class="nav-item" id="nav-item_traces" [ngClass]="{'active': typeElements[0] == 'traces'}">
+                <a class="nav-link" href="traces" *ngIf="typeElements[0] != 'traces'">Traces</a>
+                <a class="nav-link active" href="traces" *ngIf="typeElements[0] == 'traces'">Traces</a>
+            </li>
+            <li class="nav-item" id="nav-item_profils" [ngClass]="{'active': typeElements[0] == 'profils'}">
+                <a class="nav-link" href="profils" *ngIf="profilActuel == '1'">Profils</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{prenomActuel + " " + nomActuel}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="authentification">Se déconnecter</a>
+              </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div *ngIf="affichagePage == true" class="container">
+        <div class="testbox" id="formulaireAjout" *ngIf="modeFormulaire == true">
+            <form *ngIf="typeElements[0] != 'traces'">
+                <div>
+                    <img *ngIf="profilActuel == '1' || typeElements[0] != 'GABs'" id="imageFermer" src="assets/galerie/fermer.png" (click)=fermerPageFormulaire()/>
+                </div>
+                <h2 style="text-align: center; margin-top: 10px;" *ngIf="etatModification == false">{{typeElements[1]}}</h2>
+                <h2 style="text-align: center; margin-top: 10px;" *ngIf="etatModification == true">{{typeElements[2]}}</h2>
+                <div *ngFor="let attribut of attributs" class="item {{attribut[1]}}Ajout">
+                    <label for="name" *ngIf="attribut[2] == 0">{{attribut[0]}}<span>*</span></label>
+                    <input class="form-control" value="{{attribut[3]}}" *ngIf="attribut[2] == 0" name="{{attribut[1]}}" id="{{attribut[1]}}Ajout" (keyup)="retirerInvalid($event)" [attr.disabled]="attribut == attributs[0] && etatModification == true ? 'disabled' : null" [attr.type]="attribut[0] != 'email'? 'text' : 'email'"/>
+                </div>
+                <div class="item {{attributs[attributs.length - 1][1]}}Ajout" *ngIf="attributs[attributs.length - 1][2] == 1">
+                    <label for="name">{{attributs[attributs.length - 1][0]}}<span>*</span></label>
+                    <select class="form-control" name="{{attributs[attributs.length - 1][1]}}" id="{{attributs[attributs.length - 1][1]}}Ajout">
+                        <option *ngFor="let reference of referencesAvant" value={{reference[0]}}>{{reference[1]}}</option>
+                        <option value={{reference[0]}} *ngFor="let reference of referenceSelected" selected>{{reference[1]}}</option>
+                        <option *ngFor="let reference of referencesApres" value={{reference[0]}}>{{reference[1]}}</option>
+                    </select>
+                </div>
+                <div class="btn-block">
+                    <button type="submit" *ngIf="etatModification == false" (click)=confirmer_ajout_modification_element()>Ajouter l'élément</button>
+                    <button type="submit" *ngIf="etatModification == true" (click)=confirmer_ajout_modification_element()>Modifier l'élément</button>
+                </div>
+            </form>
+            <form *ngIf="typeElements[0] == 'traces'">
+                <div>
+                    <img id="imageFermer" src="assets/galerie/fermer.png" (click)=fermerPageFormulaire()/>
+                </div>
+                <h2 style="text-align: center; margin-top: 10px;">La récupération d'une trace</h2>
+                <div class="libGABRecuperation">
+                    <label for="name">Libellé du GAB<span>*</span></label>
+                    <select class="form-control" id="champCodeGAB">
+                        <option *ngFor="let reference of referencesAvant" value={{reference[0]}}>{{reference[1]}}</option>
+                        <option value={{reference[0]}} *ngFor="let reference of referenceSelected" selected>{{reference[1]}}</option>
+                        <option *ngFor="let reference of referencesApres" value={{reference[0]}}>{{reference[1]}}</option>
+                    </select>
+                </div>
+                <div class="item date dateDebutRecuperation">
+                    <label for="bdate">Date de début<span>*</span></label>
+                    <input class="form-control" type="date" id="dateDebut" (change)="retirerInvalid(1)"/>
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="item date dateFinRecuperation">
+                    <label for="bdate">Date de fin<span>*</span></label>
+                    <input class="form-control" type="date" id="dateFin" (change)="retirerInvalid(2)"/>
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div>
+                    <span class="erreurFormulaire" id="erreurChamp1"></span>
+                    <span class="erreurFormulaire" id="erreurChamp2"></span>
+                </div>
+
+                <div class="btn-block">
+                    <button type="submit" (click)=recupererTraces()>Récupérer la trace</button>
+                </div>
+            </form>
+        </div>
+
+
+    <div id="example_wrapper" class="dataTables_wrapper" *ngIf="modeFormulaire == false">
+        <div style="display: inline;" *ngIf="typeElements[0] == 'traces'">
+            <div class="item date" id="dateFiltrageDebut">
+                <label for="bdate">Date de début<span>*</span></label>
+                <input class="form-control" type="date" id="dateDebut" (change)="retirerInvalid(1)"/>
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="item date" id="dateFiltrageFin">
+                <label for="bdate">Date de fin<span>*</span></label>
+                <input class="form-control" type="date" id="dateFin" (change)="retirerInvalid(2)"/>
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="btn-block" id="filtrageSubmit">
+                <button type="submit" (click)=filtrerTraces()>Filtrer</button>
+            </div>
+        </div>
+        <div stye="display: inline;">
+            <div class="dataTables_length filtre_recherche">
+                <label>Voir 
+                    <select name="example_length" aria-controls="example" (change)="afficher_n_ligne($event)">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> lignes
+                </label>
+            </div>
+            <div class="dataTables_filter filtre_recherche">
+                <label>Recherche :
+                    <input type="search" class="" placeholder="" aria-controls="example" (keyup)="rechercher('')" id="recherche" />
+                </label>
+            </div>
+        </div>
+        <table id="example" class="table table-striped dataTable" role="grid" aria-describedby="example_info">
+            <thead class="table-bordered">
+                <tr role="row">
+                    <th [ngClass]="{'sorting': elementDeTri != attribut[1], 'sorting_asc': elementDeTri == attribut[1] && ascendre == true, 'sorting_desc': elementDeTri == attribut[1] && ascendre == false}" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 89.1562px; padding: 3px;" *ngFor="let attribut of attributs" (click)=trierPar(attribut[1])><a>{{attribut[0]}}</a></th>
+                    <th class="editer" [ngStyle]="{'width': width}">
+                        <div style="margin-right: 10px;">
+                            <img class="ajouter-editer" *ngIf="typeElements[0] != 'traces'" (click)=ajouter_modifier_Element(0) src="../../../assets/galerie/ajouter.png"/>
+                            <img class="ajouter-editer" *ngIf="typeElements[0] == 'traces' && profilActuel == '1'" (click)=ajouter_modifier_Element(0) src="../../../assets/galerie/récupérer.jpg"/>
+                        </div>
+                        <div>
+                            <img class="ajouter-editer" *ngIf="typeElements[0] != 'traces'" (click)=autoriserModification() src="../../../assets/galerie/editer.png"/>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="elements" class="table-bordered">
+                <tr role="row" class="odd" *ngFor="let element of elements">
+                    <td *ngIf="(typeElements[0] == 'regions')"><a routerLink="/agences/{{element.codReg}}" class="sorting_1">{{element.codReg}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'regions')"><a routerLink="/agences/{{element.codReg}}">{{element.libReg}}</a></td>
+                    <td class="editer" *ngIf="(typeElements[0] == 'regions')">
+                        <img src="../../../assets/galerie/editerElement.png" (click)=ajouter_modifier_Element(element) *ngIf="modificationAuorisee==true"/>
+                    </td>
+                </tr>
+                <tr role="row" class="odd" *ngFor="let element of elements">
+                    <td *ngIf="(typeElements[0] == 'agences')"><a routerLink="/GABs/{{element.codeBurpo}}" class="sorting_1">{{element.codeBurpo}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'agences')"><a routerLink="/GABs/{{element.codeBurpo}}">{{element.libelleBurpo}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'agences')"><a routerLink="/agences/{{element.codReg}}">{{element.libReg}}</a></td>
+                    <td class="editer" *ngIf="(typeElements[0] == 'agences')">
+                        <img src="../../../assets/galerie/editerElement.png" (click)=ajouter_modifier_Element(element) *ngIf="modificationAuorisee==true"/>
+                    </td>
+                </tr>
+                <tr role="row" class="odd" *ngFor="let element of elements">
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/traces/{{element.codeGAB}}" class="sorting_1">{{element.codeGAB}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/traces/{{element.codeGAB}}">{{element.libGAB}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/traces/{{element.codeGAB}}">{{element.urlGAB}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/traces/{{element.codeGAB}}">{{element.urlGABArchive}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/traces/{{element.codeGAB}}">{{element.dateDernierRemontee}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'GABs')"><a routerLink="/GABs/{{element.codeBurpo}}">{{element.libelleBurpo}}</a></td>
+                    <td class="editer" *ngIf="(typeElements[0] == 'GABs')">
+                        <img src="../../../assets/galerie/editerElement.png" (click)=ajouter_modifier_Element(element) *ngIf="modificationAuorisee==true"/>
+                    </td>
+                </tr>
+                <tr role="row" class="odd" *ngFor="let element of elements">
+                    <td *ngIf="(typeElements[0] == 'traces')"><a href="{{element.cheminTrace}}" class="sorting_1">{{element.idTrace}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'traces')"><a href="{{element.cheminTrace}}">{{element.nomFichier}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'traces')"><a href="{{element.cheminTrace}}">{{element.dateTrx}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'traces')"><a href="{{element.cheminTrace}}">{{element.dateRemontee}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'traces')"><a routerLink="/traces/{{element.codeGAB}}">{{element.libGAB}}</a></td>
+                    <td class="editer" *ngIf="(typeElements[0] == 'traces')">
+                        <img src="../../../assets/galerie/editerElement.png" (click)=ajouter_modifier_Element(element) *ngIf="modificationAuorisee==true"/>
+                    </td>
+                </tr>
+                <tr role="row" class="odd" *ngFor="let element of elements">
+                    <td *ngIf="(typeElements[0] == 'profils')"><a class="a_profil">{{element.codeU}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'profils')"><a class="a_profil">{{element.nom}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'profils')"><a class="a_profil">{{element.prenom}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'profils')"><a class="a_profil">{{element.email}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'profils')"><a class="a_profil">{{element.motDePasse}}</a></td>
+                    <td *ngIf="(typeElements[0] == 'profils')"><a routerLink="/profils/{{element.profil}}" class="sorting_1">{{typeProfil(element.profil)}}</a></td>
+                    <td class="editer" *ngIf="(typeElements[0] == 'profils')">
+                        <img src="../../../assets/galerie/editerElement.png" (click)=ajouter_modifier_Element(element) *ngIf="modificationAuorisee==true"/>
+                    </td>
+                </tr>
+            </tbody>
+            <thead class="table-bordered">
+                <tr role="row">
+                    <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 89.1562px; padding: 3px;" *ngFor="let attribut of attributs"><a style="cursor: auto;">{{attribut[0]}}</a></th>
+                </tr>
+            </thead>
+        </table>
+        <div class="dataTables_info" id="example_info" role="status" aria-live="polite" *ngIf="pageActuelle*nombreLignes < nombreLignesTotal">Affichage de {{(pageActuelle-1)*nombreLignes + 1}} à {{pageActuelle*nombreLignes}} sur {{nombreLignesTotal}} entrées</div>
+        <div class="dataTables_info" id="example_info" role="status" aria-live="polite" *ngIf="pageActuelle*nombreLignes >= nombreLignesTotal">Affichage de {{(pageActuelle-1)*nombreLignes + 1}} à {{nombreLignesTotal}} sur {{nombreLignesTotal}} entrées</div>
+        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+            <a class="paginate_button previous disabled" aria-controls="example" data-dt-idx="0" tabindex="0" id="_previous" (click)=suivant_arriere(false)>Arrière</a>
+            <span id="boutonsPages" *ngIf="_etatTransition == 12">
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" id="p1" (click)=accederAuPageViaEvent($event)>1</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" *ngFor="let page of pages[0]" (click)=accederAuPageViaEvent($event) id="p{{page}}">{{page}}</a>
+            </span>
+            <span id="boutonsPages" *ngIf="_etatTransition != 12">
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="p1" *ngIf="_etatTransition == 13 || _etatTransition == 6 || _etatTransition == 10">1</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="p1" *ngIf="!(_etatTransition == 13 || _etatTransition == 6 || _etatTransition == 10)">1</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" *ngFor="let page of pages[0]" (click)=accederAuPageViaEvent($event) id="p{{page}}">{{page}}</a>
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="p4" *ngIf="_etatTransition == 5">4</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="p4"  *ngIf="!(_etatTransition == 5)">4</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="p5">5</a>
+                <span id="3Points1" *ngIf="(nombrePages>5)">…</span>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" *ngIf="(nombrePages>5 && pageActuelle>=5 && pages[1].length != 0)" (click)=accederAuPageViaEvent($event) id="m{{pages[1][0]}}">{{pages[1][0]}}</a>
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" *ngIf="(nombrePages>5 && pageActuelle>=5 && pages[1].length != 0)" (click)=accederAuPageViaEvent($event) id="m{{pages[1][1]}}">{{pages[1][1]}}</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" *ngIf="(nombrePages>5 && pageActuelle>=5 && pages[1].length != 0)" (click)=accederAuPageViaEvent($event) id="m{{pages[1][2]}}">{{pages[1][2]}}</a>
+                <span id="3Points2" *ngIf="(nombrePages>5 && pageActuelle>=5 && pages[1].length != 0)">…</span>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) *ngIf="(nombrePages>5 && pageActuelle>=5 && pages[1].length == 0)" id="d{{nombrePages-4}}">{{nombrePages-4}}</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) *ngIf="_etatTransition == 11 || _etatTransition == 3 || _etatTransition == 9" id="d{{nombrePages-3}}">{{nombrePages-3}}</a>
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) *ngIf="_etatTransition == 2" id="d{{nombrePages-3}}" >{{nombrePages-3}}</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" *ngFor="let page of pages[2]" (click)=accederAuPageViaEvent($event) id="d{{page}}">{{page}}</a>
+                <a class="paginate_button current" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="d{{nombrePages}}" *ngIf="_etatTransition == 3 || _etatTransition == 11">{{nombrePages}}</a>
+                <a class="paginate_button" aria-controls="example" data-dt-idx="2" tabindex="0" (click)=accederAuPageViaEvent($event) id="d{{nombrePages}}" *ngIf="!(_etatTransition == 3 || _etatTransition == 11)">{{nombrePages}}</a>
+            </span>
+            <a class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="_next" (click)=suivant_arriere(true)>Suivant</a>
+        </div>
+    </div>
+</div>

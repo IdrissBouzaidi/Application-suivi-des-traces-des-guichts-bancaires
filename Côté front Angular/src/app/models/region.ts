@@ -1,4 +1,5 @@
+
 export class Region {
-    codeReg: number;
+    codReg: number;
     libReg: string;
 }

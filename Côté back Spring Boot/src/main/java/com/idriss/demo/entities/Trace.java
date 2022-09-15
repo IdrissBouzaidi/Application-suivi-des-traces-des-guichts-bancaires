@@ -1,6 +1,7 @@
 package com.idriss.demo.entities;
 
-import java.text.SimpleDateFormat;
+import java.sql.Date;
+import java.text.ParseException;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +19,8 @@ public class Trace {
 	@ManyToOne
 	private GAB gab;
 	
-	private String dateTrx;
-	private String dateRemontee;
+	private Date dateTrx;
+	private Date dateRemontee;
 	
 	
 	
@@ -27,7 +28,7 @@ public class Trace {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Trace(String nomFichier, GAB gab, String dateTrx, String dateRemontee) {
+	public Trace(String nomFichier, GAB gab, Date dateTrx, Date dateRemontee) throws ParseException {
 		super();
 		this.nomFichier = nomFichier;
 		this.gab = gab;
@@ -37,26 +38,14 @@ public class Trace {
 	public int getIdTrace() {
 		return idTrace;
 	}
-	public void setIdTrace(int idTrace) {
-		this.idTrace = idTrace;
-	}
 	public String getNomFichier() {
 		return nomFichier;
 	}
-	public void setNomFichier(String nomFichier) {
-		this.nomFichier = nomFichier;
-	}
-	public String getDateTrx() {
+	public Date getDateTrx() {
 		return dateTrx;
 	}
-	public void setDateTrx(String dateTrx) {
-		this.dateTrx = dateTrx;
-	}
-	public String getDateRemontee() {
+	public Date getDateRemontee() {
 		return dateRemontee;
-	}
-	public void setDateRemontee(String dateRemontee) {
-		this.dateRemontee = dateRemontee;
 	}
 	@Override
 	public String toString() {

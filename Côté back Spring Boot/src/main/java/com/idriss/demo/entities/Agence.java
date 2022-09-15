@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 public class Agence {
 	@Id
 	private String codeBurpo;
+
 	private String libelleBurpo;
 	
 	@OneToMany (mappedBy = "agence")
@@ -19,7 +20,6 @@ public class Agence {
 	@ManyToOne
 	private Region region;
 
-	
 	public Agence() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -33,20 +33,15 @@ public class Agence {
 	public String getCodeBurpo() {
 		return codeBurpo;
 	}
-	public void setCodeBurpo(String codeBurpo) {
-		this.codeBurpo = codeBurpo;
-	}
 	public String getLibelleBurpo() {
 		return libelleBurpo;
-	}
-	public void setLibelleBurpo(String libelleBurpo) {
-		this.libelleBurpo = libelleBurpo;
 	}
 	public List<GAB> getGABs() {
 		return GABs;
 	}
-	public void setGABs(List<GAB> gABs) {
-		GABs = gABs;
+	public void modifier(String libelleBurpo, Region region) {
+		this.libelleBurpo = libelleBurpo;
+		this.region = region;
 	}
 	
 

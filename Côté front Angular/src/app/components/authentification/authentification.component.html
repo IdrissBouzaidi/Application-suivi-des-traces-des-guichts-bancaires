@@ -1,9 +1,14 @@
-<div class="container">
-    <div>
-        User Name : <input type="text" name="username" [(ngModel)]="username">
-        Password : <input type="password" name="password" [(ngModel)]="password">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="icon d-flex align-items-center justify-content-center" id="divIcon">
+            <span class="fa fa-user-o" style="color: #fff;"></span>
+            </div>
+        <form>
+            <input type="text" id="adresse" class="fadeIn second form-control" placeholder="L'adresse électronique" (keydown)="retirerInvalid(1)" />
+            <span class="erreurFormulaire" id="erreurChamp1"></span>
+            <input type="password" id="motDePasse" class="fadeIn third form-control" placeholder="password" (keydown)="retirerInvalid(2)" />
+            <span class="erreurFormulaire" id="erreurChamp2"></span>
+            <input type="submit" class="fadeIn fourth" value="Log In" (click)=validerInformations() />
+        </form>
     </div>
-    <button (click)=checkLogin() class="btn btn-success">
-        Login
-    </button>
 </div>

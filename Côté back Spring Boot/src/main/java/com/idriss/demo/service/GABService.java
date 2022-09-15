@@ -2,11 +2,12 @@ package com.idriss.demo.service;
 
 import java.util.List;
 
-import com.idriss.demo.entities.Agence;
+import com.idriss.demo.classes.GABs_nbreLignes;
 import com.idriss.demo.entities.GAB;
-import com.idriss.demo.entities.Region;
-import com.idriss.demo.entities.Trace;
+
 
 public interface GABService {
-	List<Trace> findGabByCode(String codeGAB);
+	List<GAB> findGabByCode(String codeGAB);
+	GABs_nbreLignes findGABs(String data);
+	int ajouterGAB(String data);
 }

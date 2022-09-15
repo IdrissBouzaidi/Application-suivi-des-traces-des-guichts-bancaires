@@ -1,0 +1,271 @@
+
+th {
+  resize: horizontal;
+  overflow: auto;
+}
+
+
+
+th a{
+  cursor: pointer;
+  display: block;
+  margin: 15px;
+}
+
+th.editer img {
+  width: 34px;
+  text-align:center;
+  display:flex;
+  cursor: pointer;
+}
+
+th.editer div {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.editer {
+  resize: none;
+  border: none;
+  padding-left: 10px;
+  background-color:white;
+}
+td.editer img {
+  width: 20px;
+  cursor: pointer;
+}
+
+.navbar-brand {
+  float: none;
+}
+
+.navbar-center {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  margin: auto;
+  height:100%;
+}
+.container{
+    margin-top: 30px;
+  }
+  body {
+    color: #404E67;
+    background: #F5F7FA;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .table-wrapper {
+    width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;	
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  }
+  h2 {
+    margin: 6px 0 0;
+    font-size: 22px;
+  }
+  .add-new {
+    margin-right: 25%;
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+  }
+  .add-new i {
+    margin-right: 4px;
+  }
+  table.table {
+    table-layout: fixed;
+  }
+  table.table tr th, table.table tr td {
+    border-color: #e9e9e9;
+  }
+  table.table th:last-child {
+    width: 100px;
+  }
+  table.table td a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    min-width: 24px;
+  }    
+  td a.add {
+    color: #27C46B;
+    cursor: pointer;
+  }
+  td a.edit {
+    color: #FFC107;
+  }
+  td a.delete {
+    color: #E34724;
+    cursor: pointer;
+  }
+  td i {
+    font-size: 25px;
+  }
+  td a.add i {
+    font-size: 30px;
+    margin-right: -1px;
+    position: relative;
+    top: 3px;
+  }    
+  .form-control {
+    height: 32px;
+    line-height: 32px;
+    box-shadow: none;
+    border-radius: 2px;
+  }
+  .form-control.error {
+    border-color: #f50000;
+  }
+  td .add {
+    display: none;
+    margin-left: 30%;
+  }
+  h1 {
+  position: absolute;
+  margin: 0;
+  font-size: 40px;
+  color: #fff;
+  z-index: 2;
+  line-height: 83px;
+  }
+  .testbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+  }
+  form {
+  width: 100%;
+  padding: 0px 20px 20px 20px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 0 8px  #cc7a00; 
+  }
+  .testbox input, .testbox select {
+  width: calc(100% - 10px);
+  padding: 5px;
+  }
+  input[type="date"] {
+  padding: 4px 5px;
+  }
+  .item:hover p, .item:hover i, input:hover::placeholder {
+  color: #cc7a00;
+  }
+  .item input:hover, .item select:hover {
+  border: 1px solid transparent;
+  box-shadow: 0 0 3px 0 #cc7a00;
+  color: #cc7a00;
+  }
+  .item {
+  position: relative;
+  margin: 10px 0;
+  }
+  .item span {
+  color: red;
+  }
+  input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+  }
+  .item i, input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  font-size: 20px;
+  color: #cc7a00;
+  }
+  .item i {
+  right: 1%;
+  top: 30px;
+  z-index: 1;
+  }
+  [type="date"]::-webkit-calendar-picker-indicator {
+  right: 10%;
+  z-index: 2;
+  cursor: pointer;
+  }
+  .btn-block {
+  margin-top: 10px;
+  text-align: center;
+  }
+  button {
+  width: 150px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px; 
+  background: #cc7a00;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  }
+  button:hover {
+  background: #ff9800;
+  }
+
+  #imageFermer {
+    width: 30px;
+    float: right;
+    margin-right: -18px;
+    cursor: pointer;
+  }
+  .date{
+    width: 45%;
+    display: inline-block;
+    margin-right: 5%;
+    margin-bottom: 0%;
+    padding-left: 4%;
+  }
+
+  .erreurFormulaire{
+    font-size: 12px;
+    text-align: right;
+    font-weight: 600;
+    color: #e74c3c;
+    display: inline-block;
+    width: calc(45% - 10px);
+    margin-right: calc(5% + 10px);
+  }
+
+td a{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+#dateFiltrageDebut {
+  width: 30%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0%;
+}
+#dateFiltrageFin {
+  width: 30%;
+  margin-left: 0%;
+  margin-right: 5%;
+  padding: 0%;
+}
+#filtrageSubmit {
+  width: 15%;
+  display: inline-block;
+}
+#filtrageSubmit button {
+  width: 100%;
+  height: 40px;
+}
+.filtre_recherche {
+  margin-top: 15px;
+}
+.a_profil {
+  cursor: auto !important;
+}
+.nav-item{
+  padding: 0px 10px 0px 10px;
+}

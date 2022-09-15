@@ -3,4 +3,7 @@ export class Trace {
     nomFichier: string;
     dateTrx: string;
     dateRemontee: string;
+    codeGAB: string;
+    libGAB: string;
+    cheminTrace: string;
 }
